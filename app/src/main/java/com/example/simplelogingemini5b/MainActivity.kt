@@ -1,22 +1,28 @@
 package com.example.simplelogingemini5b
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.simplelogingemini5b.adapters.CursoAdapter
 import com.example.simplelogingemini5b.databinding.ActivityMainBinding
+import com.example.simplelogingemini5b.models.Curso
+import com.example.simplelogingemini5b.models.Usuario
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var usuarioLogueado: Usuario? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -24,28 +30,53 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        usuarioLogueado = intent.getParcelableExtra("EXTRA_USER")
+        
+        setupRecyclerView()
         setupListeners()
     }
 
-    private fun setupListeners() {
-        binding.btnLogin.setOnClickListener {
-            val username = binding.etUsername.text.toString().trim()
-            val password = binding.etPassword.text.toString().trim()
+    private fun setupRecyclerView() {
+        val listaCursos = listOf(
+            Curso(
+                "Desarrollo Web Fullstack",
+                "Domina el frontend y backend con las tecnologías más modernas como React y Node.js.",
+                "Principiante",
+                "12 hrs",
+                "Web",
+                R.drawable.ic_user_placeholder // Usando el placeholder por ahora
+            ),
+            Curso(
+                "Mobile App con Kotlin",
+                "Crea aplicaciones nativas para Android usando Kotlin y las mejores prácticas de Google.",
+                "Intermedio",
+                "20 hrs",
+                "Mobile",
+                R.drawable.ic_user_placeholder
+            ),
+            Curso(
+                "Diseño UX/UI",
+                "Aprende a diseñar interfaces intuitivas y experiencias de usuario memorables con Figma.",
+                "Principiante",
+                "10 hrs",
+                "Diseño",
+                R.drawable.ic_user_placeholder
+            )
+        )
 
-            if (username.isNotEmpty() && password.isNotEmpty()) {
-                // Simulación de validación exitosa
-                Toast.makeText(this, getString(R.string.correct_credentials), Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, getString(R.string.empty_fields), Toast.LENGTH_SHORT).show()
+        binding.rvCursos.layoutManager = LinearLayoutManager(this)
+        binding.rvCursos.adapter = CursoAdapter(listaCursos) { curso ->
+            val intent = Intent(this, DetailActivity::class.java).apply {
+                putExtra("EXTRA_CURSO", curso)
+                putExtra("EXTRA_USER", usuarioLogueado)
             }
+            startActivity(intent)
         }
+    }
 
-        binding.ivFacebook.setOnClickListener {
-            Toast.makeText(this, "Facebook Login", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.ivLinkedIn.setOnClickListener {
-            Toast.makeText(this, "LinkedIn Login", Toast.LENGTH_SHORT).show()
+    private fun setupListeners() {
+        binding.ivClose.setOnClickListener {
+            finish()
         }
     }
 }

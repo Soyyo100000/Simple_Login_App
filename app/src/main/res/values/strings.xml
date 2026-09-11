@@ -4,9 +4,14 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
-    <string name="social_login">Social login</string>
+    <string name="social_login">Social Login</string>
     <string name="facebook">Facebook</string>
     <string name="linkedin">LinkedIn</string>
     <string name="correct_credentials">ingresaste las credenciales correctas</string>
     <string name="empty_fields">Por favor, completa todos los campos</string>
+    <string name="invalid_credentials">Usuario o contraseña incorrectos</string>
+    <string name="cursos_disponibles">Cursos disponibles</string>
+    <string name="ver_detalles">Ver Detalles</string>
+    <string name="regresar">Regresar</string>
+    <string name="close_icon">Cerrar</string>
 </resources>
